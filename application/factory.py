@@ -30,7 +30,7 @@ def create_app():
 
         return JSONResponse(content={'success': False, "data": {"error": errors}}, status_code=status.HTTP_400_BAD_REQUEST)
 
-    from .api_response import CustomException
+    from .utils.api_response import CustomException
     @app.exception_handler(CustomException)
     async def custom_exception_handler(request: Request, exc: CustomException):
         return JSONResponse(status_code=exc.status, content={'success': False, 'error': {"data": exc.error}})

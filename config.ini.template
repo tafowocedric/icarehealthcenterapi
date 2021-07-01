@@ -1,0 +1,11 @@
+[base]
+DEBUG = True
+project_name = ICAREHEALTHCENTER
+
+
+[database]
+name =
+user =
+password =
+port = 3306
+host = localhost

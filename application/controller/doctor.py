@@ -11,14 +11,18 @@ def create_doctor(schema: DoctorSchema.DoctorCreate):
     hash_password = Hash.bcrypt(schema.password)
     data = schema.dict()
 
-    # check if doctor with email already exist return 400 bad request
+    # check if doctor with email or phone already exist return 400 bad request
     existing_doctor = Doctor.get_doctor_by_email(data.get('email'))
     if existing_doctor:
         raise CustomException(error="Email already in use")
 
+    existing_doctor = Doctor.get_doctor_by_phone(data.get('phone'))
+    if existing_doctor:
+        raise CustomException(error="Phone number already in use")
+
     data['password'] = hash_password
     doctor = Doctor.create(data)
-    return SuccessResponse(data=doctor).setStatusCode(status=status.HTTP_201_CREATED).response()
+    return SuccessResponse(data=doctor, message='success').setStatusCode(status=status.HTTP_201_CREATED).response()
 
 
 def delete_doctor(id: int):

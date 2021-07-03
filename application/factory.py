@@ -16,10 +16,10 @@ def create_app():
     # middlewares
     app.add_middleware(CORSMiddleware, allow_origins=origins, allow_credentials=True, allow_methods=["*"], allow_headers=["*"])
 
-    # routes
-    # @app.get("/")
-    # def read_root():
-    #     return {"Hello": "World"}
+    # import routes
+    from .routes import doctor as doctorRoutes
+
+    app.include_router(doctorRoutes.router)
 
     # override validation error
     @app.exception_handler(RequestValidationError)
@@ -33,6 +33,9 @@ def create_app():
     from .utils.api_response import CustomException
     @app.exception_handler(CustomException)
     async def custom_exception_handler(request: Request, exc: CustomException):
-        return JSONResponse(status_code=exc.status, content={'success': False, 'error': {"data": exc.error}})
+        return JSONResponse(
+                status_code=exc.status,
+                content={'success': False, 'error': {"data": exc.error}}
+        )
 
     return app

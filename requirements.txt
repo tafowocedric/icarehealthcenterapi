@@ -1,5 +1,7 @@
 fastapi==0.65.2
+greenlet==1.1.0
 pydantic==1.8.2
+SQLAlchemy==1.4.20
 starlette==0.14.2
 typing-extensions==3.10.0.0
 unicorn==1.0.3

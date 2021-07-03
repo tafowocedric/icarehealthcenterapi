@@ -7,7 +7,7 @@ engine = create_engine(Config.SQLALCHEMY_DATABASE_URI)
 SessionLocal = sessionmaker(autoflush=True, autocommit=True, bind=engine)
 
 # session hook
-def session_hook(func: object) -> object:
+def session_hook(func):
     """
         hook opens a database session do a session_hook(read or write) and closes the connection after the run()
         func: function that communicates with the database (e.g fun(*args, db: Session))

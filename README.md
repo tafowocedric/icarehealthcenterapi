@@ -23,4 +23,7 @@ create a config.ini file using the config_template.ini file and update the infor
     cp -a config.ini.template config.ini
 
 ## Starting the application.
-    python main.py 
+    python main.py ``
+    
+ ## API Documentation.
+    http://localhost:5001/docs#/

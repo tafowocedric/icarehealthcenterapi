@@ -19,9 +19,11 @@ def create_app():
     # import routes
     from .routes import doctor as doctorRoutes
     from .routes import patient as patientRoutes
+    from .routes import appointment as appointmentRoutes
 
     app.include_router(doctorRoutes.router)
     app.include_router(patientRoutes.router)
+    app.include_router(appointmentRoutes.router)
 
     # override validation error
     @app.exception_handler(RequestValidationError)

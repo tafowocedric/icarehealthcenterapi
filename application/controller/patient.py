@@ -21,7 +21,7 @@ def create_patient(schema: PatientSchema.PatientCreate):
 
     data['password'] = hash_password
     patient = Patient.create(data)
-    return SuccessResponse(data=patient).response()
+    return SuccessResponse(data=patient).setStatusCode(status=status.HTTP_201_CREATED).response()
 
 
 def delete_patient(id: int):

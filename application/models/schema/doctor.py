@@ -1,6 +1,6 @@
 from datetime import datetime
 from typing import Optional, Any, List
-from pydantic import BaseModel
+from pydantic import BaseModel, validator
 
 from application.models.schema.utils import SuccessResponse
 
@@ -14,6 +14,7 @@ class BaseDoctor(BaseModel):
 
 class DoctorCreate(BaseDoctor):
     password: str
+
 
 class _Doctor(BaseDoctor):
     id: Optional[int]

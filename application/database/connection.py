@@ -1,7 +1,8 @@
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, exc
 from sqlalchemy.orm import sessionmaker
 
 from ..config import Config
+from ..utils.api_response import CustomException
 
 engine = create_engine(Config.SQLALCHEMY_DATABASE_URI)
 SessionLocal = sessionmaker(autoflush=True, autocommit=True, bind=engine)
@@ -23,6 +24,11 @@ def session_hook(func):
 
             data = func(db, *args, **kwargs)
             return data
+
+        except exc.IntegrityError as e:
+            print(e._message())
+            db.rollback()
+            raise CustomException(error='Operation fail')
 
         except Exception as e:
             raise (Exception(e))

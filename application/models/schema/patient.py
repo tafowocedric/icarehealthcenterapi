@@ -5,17 +5,16 @@ from pydantic import BaseModel
 from application.models.schema.utils import SuccessResponse
 
 
-class BaseDoctor(BaseModel):
+class BasePatient(BaseModel):
     first_name: Optional[str]
     last_name: Optional[str]
     email: Optional[str]
     phone: Optional[str]
-    speciality: Optional[Any]
 
-class DoctorCreate(BaseDoctor):
+class PatientCreate(BasePatient):
     password: str
 
-class _Doctor(BaseDoctor):
+class _Patient(BasePatient):
     id: Optional[int]
     full_name: str
     created_at: datetime
@@ -24,8 +23,8 @@ class _Doctor(BaseDoctor):
     class Config:
         orm_mode = True
 
-class Doctor(SuccessResponse):
-    data: Optional[_Doctor]
+class Patient(SuccessResponse):
+    data: Optional[_Patient]
 
-class DoctorList(SuccessResponse):
-    data: Optional[List[_Doctor]]
+class PatientList(SuccessResponse):
+    data: Optional[List[_Patient]]

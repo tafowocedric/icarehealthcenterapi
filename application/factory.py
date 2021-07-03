@@ -18,8 +18,10 @@ def create_app():
 
     # import routes
     from .routes import doctor as doctorRoutes
+    from .routes import patient as patientRoutes
 
     app.include_router(doctorRoutes.router)
+    app.include_router(patientRoutes.router)
 
     # override validation error
     @app.exception_handler(RequestValidationError)

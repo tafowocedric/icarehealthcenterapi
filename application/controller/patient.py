@@ -1,12 +1,9 @@
-from passlib.context import CryptContext
 from starlette import status
 
 from application.models.patient import Patient
 from application.models.schema import patient as PatientSchema
-from application.models.speciality import Specialization
 from application.utils.api_response import CustomException, SuccessResponse
-
-pwd_cxt = CryptContext(schemes=["bcrypt"], deprecated="auto")
+from application.utils.bcrypt import Hash
 
 
 def create_patient(schema: PatientSchema.PatientCreate):
@@ -14,10 +11,10 @@ def create_patient(schema: PatientSchema.PatientCreate):
     hash_password = Hash.bcrypt(schema.password)
     data = schema.dict()
 
-    # check if patient with email already exist return 400 bad request
-    existing_patient = Patient.get_patient_by_email(data.get('email'))
+    # check if patient with phone number already exist return 400 bad request
+    existing_patient = Patient.get_patient_by_phone(data.get('phone'))
     if existing_patient:
-        raise CustomException(error="Email already in use")
+        raise CustomException(error="Phone number already in use")
 
     data['password'] = hash_password
     patient = Patient.create(data)
@@ -32,14 +29,3 @@ def delete_patient(id: int):
         raise CustomException(error=f"Patient with id {id} not found", status=status.HTTP_404_NOT_FOUND)
 
     return SuccessResponse(data={}, message=patient).response()
-
-
-
-class Hash:
-    @staticmethod
-    def bcrypt(password: str):
-        return pwd_cxt.hash(password)
-
-    @staticmethod
-    def verify(plain_password, hashed_password):
-        return pwd_cxt.verify(hash=hashed_password, secret=plain_password)

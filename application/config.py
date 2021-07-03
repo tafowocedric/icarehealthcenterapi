@@ -6,9 +6,9 @@ basedir = Path(__file__).parent.parent
 config = ConfigParser()
 config.read(Path(basedir, 'config.ini'))
 
-
 basedir = Path(__file__).parent
 DEBUG = json.loads(str(config.get('base', 'DEBUG')).lower())
+
 
 class Config:
     DEBUG: DEBUG
@@ -23,5 +23,6 @@ class Config:
 
     SQLALCHEMY_DATABASE_URI = f'mysql+mysqldb://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+
 
 settings = Config()

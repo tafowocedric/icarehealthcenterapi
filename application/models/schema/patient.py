@@ -1,15 +1,17 @@
 from datetime import datetime
-from typing import Optional, Any, List
-from pydantic import BaseModel, validator
+from typing import Optional, List
+
+from pydantic import BaseModel
 
 from application.models.schema.utils import SuccessResponse
 
 
 class BasePatient(BaseModel):
-    first_name: Optional[str]
-    last_name: Optional[str]
+    first_name: str
+    last_name: str
     email: Optional[str]
-    phone: Optional[str]
+    phone: str
+
 
 class PatientCreate(BasePatient):
     password: str
@@ -24,8 +26,10 @@ class _Patient(BasePatient):
     class Config:
         orm_mode = True
 
+
 class Patient(SuccessResponse):
     data: Optional[_Patient]
+
 
 class PatientList(SuccessResponse):
     data: Optional[List[_Patient]]

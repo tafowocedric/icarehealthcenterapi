@@ -1,5 +1,6 @@
 from datetime import datetime
-from typing import Optional, Any, List
+from typing import Optional, List
+
 from pydantic import BaseModel
 
 from application.models.schema.utils import SuccessResponse
@@ -13,6 +14,7 @@ class BaseAppointment(BaseModel):
 class AppointmentCreate(BaseAppointment):
     description: str
 
+
 class _Appointment(BaseAppointment):
     id: Optional[int]
     patient_id: Optional[int]
@@ -23,8 +25,10 @@ class _Appointment(BaseAppointment):
     class Config:
         orm_mode = True
 
+
 class Appointment(SuccessResponse):
     data: Optional[_Appointment]
+
 
 class AppointmentList(SuccessResponse):
     data: Optional[List[_Appointment]]

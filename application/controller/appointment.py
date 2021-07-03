@@ -1,12 +1,10 @@
 from datetime import datetime
-from dateutil import parser
 
 from starlette import status
 
 from application.models.appointment import Appointment
 from application.models.schema import appointment as AppointmentSchema
 from application.utils.api_response import CustomException, SuccessResponse
-
 
 
 def create_appointment(patient_id: int, schema: AppointmentSchema.AppointmentCreate):
@@ -24,7 +22,7 @@ def create_appointment(patient_id: int, schema: AppointmentSchema.AppointmentCre
         raise CustomException(error="Doctor is already booked for this day")
 
     appointment = Appointment.create(data)
-    return SuccessResponse(data=appointment).response()
+    return SuccessResponse(data=appointment, message="Appointment successfully Created").setStatusCode(status=status.HTTP_201_CREATED).response()
 
 
 def delete_appointment(id: int):
@@ -35,5 +33,3 @@ def delete_appointment(id: int):
         raise CustomException(error=f"Appointment with id {id} not found", status=status.HTTP_404_NOT_FOUND)
 
     return SuccessResponse(data={}, message=appointment).response()
-
-

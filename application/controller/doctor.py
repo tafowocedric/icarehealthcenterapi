@@ -1,12 +1,9 @@
-from passlib.context import CryptContext
 from starlette import status
 
 from application.models.doctor import Doctor
 from application.models.schema import doctor as DoctorSchema
-from application.models.speciality import Specialization
 from application.utils.api_response import CustomException, SuccessResponse
-
-pwd_cxt = CryptContext(schemes=["bcrypt"], deprecated="auto")
+from application.utils.bcrypt import Hash
 
 
 def create_doctor(schema: DoctorSchema.DoctorCreate):
@@ -18,12 +15,6 @@ def create_doctor(schema: DoctorSchema.DoctorCreate):
     existing_doctor = Doctor.get_doctor_by_email(data.get('email'))
     if existing_doctor:
         raise CustomException(error="Email already in use")
-
-    # verify doctor domain is exist
-    speciality = Specialization.get_speciality_by_title(data.get('speciality'))
-
-    if speciality is None:
-        raise CustomException(error="Speciality not supported.")
 
     data['password'] = hash_password
     doctor = Doctor.create(data)
@@ -38,14 +29,3 @@ def delete_doctor(id: int):
         raise CustomException(error=f"Doctor with id {id} not found", status=status.HTTP_404_NOT_FOUND)
 
     return SuccessResponse(data={}, message=doctor).response()
-
-
-
-class Hash:
-    @staticmethod
-    def bcrypt(password: str):
-        return pwd_cxt.hash(password)
-
-    @staticmethod
-    def verify(plain_password, hashed_password):
-        return pwd_cxt.verify(hash=hashed_password, secret=plain_password)

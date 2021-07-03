@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, Text, Table, DATE
+from sqlalchemy import Column, Integer, DateTime, ForeignKey, Text, DATE
 from sqlalchemy.orm import relationship
 from sqlalchemy.orm.session import Session
 from sqlalchemy.sql import func
@@ -6,6 +6,7 @@ from sqlalchemy.sql import func
 from application import Base_Model
 from application.database.connection import session_hook
 from application.models.schema import appointment as AppointmentSchema
+
 
 class Appointment(Base_Model):
     __tablename__ = 'appointment'
@@ -20,14 +21,6 @@ class Appointment(Base_Model):
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
 
-    @staticmethod
-    @session_hook
-    def get_appointment_by_date(db: Session, date):
-        appointment = db.query(Appointment).filter(Appointment.date.cast(DATE)==date).first()
-        if appointment is None:
-            return None
-
-        return AppointmentSchema._Appointment.from_orm(appointment)
 
     @staticmethod
     @session_hook
@@ -49,7 +42,7 @@ class Appointment(Base_Model):
 
     @staticmethod
     @session_hook
-    def delete(db:Session, id: int):
+    def delete(db: Session, id: int):
         response = db.query(Appointment).filter(Appointment.id==id).delete()
         db.flush()
 

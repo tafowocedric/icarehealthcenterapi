@@ -1,5 +1,4 @@
-from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, Table
-from sqlalchemy.orm import relationship
+from sqlalchemy import Column, Integer, String, DateTime
 from sqlalchemy.orm.session import Session
 from sqlalchemy.sql import func
 
@@ -17,7 +16,6 @@ class Doctor(Base_Model):
     email = Column(String(100), unique=True)
     phone = Column(String(100), unique=True)
     password = Column(String(100))
-    speciality = Column(String(100), ForeignKey('specialization.title'))
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
 
@@ -51,7 +49,7 @@ class Doctor(Base_Model):
         db.flush()
 
         # no record found  with id
-        if response == 0:
+        if response==0:
             return None
 
         return "Account deleted successfully"

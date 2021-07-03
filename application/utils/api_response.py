@@ -1,7 +1,8 @@
 from typing import Any
+
 from fastapi import status
-from fastapi.responses import JSONResponse
 from fastapi.encoders import jsonable_encoder
+from fastapi.responses import JSONResponse
 
 
 class SuccessResponse:
@@ -32,6 +33,6 @@ class SuccessResponse:
 
 # Custom error route response
 class CustomException(Exception):
-    def __init__(self, error = None, status: int = status.HTTP_400_BAD_REQUEST):
+    def __init__(self, error=None, status: int = status.HTTP_400_BAD_REQUEST):
         self.error = error
         self.status = status

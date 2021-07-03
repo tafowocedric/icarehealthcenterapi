@@ -1,11 +1,11 @@
-from fastapi import APIRouter, Depends, Body
-from sqlalchemy.orm import Session
+from fastapi import APIRouter
 
-from application.models.schema import patient as PatientSchema
 from application.controller import patient as PatientController
+from application.models.schema import patient as PatientSchema
 from application.models.schema.utils import SuccessResponse
 
 router = APIRouter(prefix='/patients', tags=['patients'])
+
 
 @router.post("/create", response_model=PatientSchema.Patient)
 def create_patient(schema: PatientSchema.PatientCreate):

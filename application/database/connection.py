@@ -7,6 +7,7 @@ from ..utils.api_response import CustomException
 engine = create_engine(Config.SQLALCHEMY_DATABASE_URI)
 SessionLocal = sessionmaker(autoflush=True, autocommit=True, bind=engine)
 
+
 # session hook
 def session_hook(func):
     """
@@ -16,6 +17,7 @@ def session_hook(func):
         data: The return from func
         error: in case of an error in hook
     """
+
     def run(*args, **kwargs):
         global db
 

@@ -1,9 +1,10 @@
 import json
 
 from fastapi import FastAPI, Request, status
-from starlette.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
 from fastapi.exceptions import RequestValidationError
+from fastapi.responses import JSONResponse
+from starlette.middleware.cors import CORSMiddleware
+
 from .config import settings
 
 # accept all origins
@@ -37,9 +38,6 @@ def create_app():
     from .utils.api_response import CustomException
     @app.exception_handler(CustomException)
     async def custom_exception_handler(request: Request, exc: CustomException):
-        return JSONResponse(
-                status_code=exc.status,
-                content={'success': False, 'error': {"data": exc.error}}
-        )
+        return JSONResponse(status_code=exc.status, content={'success': False, 'error': {"data": exc.error}})
 
     return app

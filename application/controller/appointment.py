@@ -3,6 +3,7 @@ from datetime import datetime
 from starlette import status
 
 from application.models.appointment import Appointment
+from application.models.doctor import Doctor
 from application.models.schema import appointment as AppointmentSchema
 from application.utils.api_response import CustomException, SuccessResponse
 
@@ -11,6 +12,11 @@ def create_appointment(patient_id: int, schema: AppointmentSchema.AppointmentCre
     data = schema.dict()
     data['patient_id'] = patient_id
     appointment_date = data.get("date")
+
+    # check if doctor exist return 400 bad request
+    doctor = Doctor.get_doctor_by_id(id=data['doctor_id'])
+    if doctor is None:
+        raise CustomException(error=f"Doctor with id {data['doctor_id']} doesn't exist")
 
     # check if appointment date < present date return 400 bad request
     if datetime.timestamp(appointment_date) < datetime.timestamp(datetime.now()):

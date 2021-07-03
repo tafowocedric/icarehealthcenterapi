@@ -41,6 +41,15 @@ class Doctor(Base_Model):
 
         return DoctorSchema._Doctor.from_orm(doctor)
 
+    @staticmethod
+    @session_hook
+    def get_doctor_by_id(db: Session, id):
+        doctor = db.query(Doctor).filter(Doctor.id==id).first()
+        if doctor is None:
+            return None
+
+        return DoctorSchema._Doctor.from_orm(doctor)
+
 
     @staticmethod
     @session_hook
